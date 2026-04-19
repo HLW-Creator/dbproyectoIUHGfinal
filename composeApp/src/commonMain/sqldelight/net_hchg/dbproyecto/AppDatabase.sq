@@ -1,0 +1,94 @@
+CREATE TABLE Estado (
+    id_estado INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+);
+
+CREATE TABLE Municipio (
+    id_municipio INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    id_estado INTEGER NOT NULL,
+    nombre TEXT NOT NULL,
+    FOREIGN KEY (id_estado) REFERENCES Estado(id_estado)
+);
+
+CREATE TABLE PersonaFisica (
+    rfc TEXT NOT NULL PRIMARY KEY,
+    curp TEXT NOT NULL,
+    nombre_completo TEXT NOT NULL,
+    fecha_nacimiento TEXT NOT NULL,
+    correo TEXT NOT NULL,
+    telefono TEXT NOT NULL,
+    codigo_postal TEXT NOT NULL,
+    id_municipio INTEGER NOT NULL,
+    tipo_vialidad TEXT NOT NULL,
+    actividad_economica TEXT NOT NULL,
+    regimen_fiscal TEXT NOT NULL,
+    FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio)
+);
+
+CREATE TABLE PersonaMoral (
+    rfc TEXT NOT NULL PRIMARY KEY,
+    razon_social TEXT NOT NULL,
+    fecha_constitucion TEXT NOT NULL,
+    rfc_representante TEXT NOT NULL,
+    rfc_socios TEXT, -- Opcional
+    numero_escritura TEXT NOT NULL,
+    codigo_postal TEXT NOT NULL,
+    id_municipio INTEGER NOT NULL,
+    regimen_capital TEXT NOT NULL,
+    actividad_economica TEXT NOT NULL,
+    FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio)
+);
+
+-- CONSULTAS (Queries)
+selectAllEstados:
+SELECT * FROM Estado;
+
+selectMunicipiosByEstado:
+SELECT * FROM Municipio WHERE id_estado = ?;
+
+
+insertPersonaFisica:
+INSERT OR REPLACE INTO PersonaFisica VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAllPersonasFisicas:
+SELECT * FROM PersonaFisica;
+
+insertPersonaMoral:
+INSERT OR REPLACE INTO PersonaMoral (
+    rfc, razon_social, fecha_constitucion, rfc_representante,
+    rfc_socios, numero_escritura, codigo_postal,
+    id_municipio, regimen_capital, actividad_economica
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAllPersonasMorales:
+SELECT * FROM PersonaMoral;
+
+countEstados:
+SELECT count(*) FROM Estado;
+insertEstado:
+INSERT INTO Estado(id_estado, nombre) VALUES (?, ?);
+insertMunicipio:
+INSERT INTO Municipio(id_municipio, id_estado, nombre) VALUES (?, ?, ?);
+
+deletePersonaFisica:
+DELETE FROM PersonaFisica WHERE rfc = ?;
+
+updatePersonaFisica:
+UPDATE PersonaFisica
+SET nombre_completo = ?, correo = ?, telefono = ?, codigo_postal = ?, tipo_vialidad = ?, actividad_economica = ?, regimen_fiscal = ?
+WHERE rfc = ?;
+
+deletePersonaMoral:
+DELETE FROM PersonaMoral WHERE rfc = ?;
+
+updatePersonaMoral:
+UPDATE PersonaMoral
+SET razon_social = ?, fecha_constitucion = ?, rfc_representante = ?, rfc_socios = ?, numero_escritura = ?, codigo_postal = ?, regimen_capital = ?, actividad_economica = ?
+WHERE rfc = ?;
+
+selectPersonaFisicaByRfc:
+SELECT * FROM PersonaFisica WHERE rfc = ?;
+
+selectPersonaMoralByRfc:
+SELECT * FROM PersonaMoral WHERE rfc = ?;
