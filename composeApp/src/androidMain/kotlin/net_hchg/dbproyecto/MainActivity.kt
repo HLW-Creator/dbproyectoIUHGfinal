@@ -21,8 +21,8 @@ class MainActivity : ComponentActivity() {
 
         val repository = ContribuyentesRepository(database)
         repository.inicializarCatalogos()
-        val viewModel = ContribuyentesViewModel(repository)
-
+        val domicilioRepo = DomicilioFiscalRepository(database)
+        val viewModel = ContribuyentesViewModel(repository, domicilioRepo)
         setContent {
 
             NavGraph(viewModel = viewModel)

@@ -13,7 +13,7 @@ import net_hchg.dbproyecto.viewmodel.ContribuyentesViewModel
 fun RegistroPersonaMoralScreen(
     viewModel: ContribuyentesViewModel,
     rfcRecibido: String?,
-    onNavigateBack: () -> Unit
+    onNavigateNext: (String) -> Unit
 ) {
     val listaEstados by viewModel.estados.collectAsState()
     val listaMunicipios by viewModel.municipios.collectAsState()
@@ -182,7 +182,7 @@ fun RegistroPersonaMoralScreen(
                         actividadEconomica = actividadEconomica
                     )
                 }
-                onNavigateBack()
+                onNavigateNext(rfc)
             },
             modifier = Modifier.fillMaxWidth(),
             enabled = rfc.length == 12 && razonSocial.isNotBlank() && municipioActual != null

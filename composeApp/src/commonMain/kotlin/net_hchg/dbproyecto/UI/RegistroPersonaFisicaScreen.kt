@@ -13,7 +13,7 @@ import net_hchg.dbproyecto.viewmodel.ContribuyentesViewModel
 fun RegistroPersonaFisicaScreen(
     viewModel: ContribuyentesViewModel,
     rfcRecibido: String?,
-    onNavigateBack: () -> Unit
+    onNavigateNext: (String) -> Unit
 ) {
     val listaEstados by viewModel.estados.collectAsState()
     val listaMunicipios by viewModel.municipios.collectAsState()
@@ -156,7 +156,7 @@ fun RegistroPersonaFisicaScreen(
                         regimenFiscal = regimenFiscal
                     )
                 }
-                onNavigateBack()
+                onNavigateNext(rfc)
             },
             modifier = Modifier.fillMaxWidth(),
             enabled = rfc.length == 13 && curp.length == 18 && municipioActual != null

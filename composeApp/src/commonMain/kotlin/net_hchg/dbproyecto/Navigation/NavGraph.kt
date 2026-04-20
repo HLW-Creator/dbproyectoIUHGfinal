@@ -9,16 +9,16 @@ import net_hchg.dbproyecto.UI.MenuPrincipalScreen
 import net_hchg.dbproyecto.UI.RegistroPersonaFisicaScreen
 import net_hchg.dbproyecto.UI.RegistroPersonaMoralScreen
 import net_hchg.dbproyecto.UI.ListaContribuyentesScreen
+import net_hchg.dbproyecto.UI.RegistroDomicilioFiscalScreen
 import net_hchg.dbproyecto.viewmodel.ContribuyentesViewModel
 
 @Composable
 fun NavGraph(viewModel: ContribuyentesViewModel) {
-
     var pantallaActual by remember { mutableStateOf("menu") }
     var rfcAEditar by remember { mutableStateOf<String?>(null) }
+    var rfcParaDomicilio by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxSize()) {
-
         if (pantallaActual != "menu") {
             FilledTonalButton(
                 onClick = { pantallaActual = "menu" },
@@ -30,36 +30,37 @@ fun NavGraph(viewModel: ContribuyentesViewModel) {
 
         when (pantallaActual) {
             "menu" -> MenuPrincipalScreen(
-                onNavigateToFisica = {
-                    rfcAEditar = null
-                    pantallaActual = "registro_fisica"
-                },
-                onNavigateToMoral = {
-                    rfcAEditar = null
-                    pantallaActual = "registro_moral"
-                },
+                onNavigateToFisica = { rfcAEditar = null; pantallaActual = "registro_fisica" },
+                onNavigateToMoral = { rfcAEditar = null; pantallaActual = "registro_moral" },
                 onNavigateToLista = { pantallaActual = "lista" }
             )
             "registro_fisica" -> RegistroPersonaFisicaScreen(
                 viewModel = viewModel,
                 rfcRecibido = rfcAEditar,
-                onNavigateBack = { pantallaActual = "menu" }
+                onNavigateNext = { rfc ->
+                    rfcParaDomicilio = rfc
+                    pantallaActual = "registro_domicilio"
+                }
             )
             "registro_moral" -> RegistroPersonaMoralScreen(
                 viewModel = viewModel,
                 rfcRecibido = rfcAEditar,
-                onNavigateBack = { pantallaActual = "menu" }
+                onNavigateNext = { rfc ->
+                    rfcParaDomicilio = rfc
+                    pantallaActual = "registro_domicilio"
+                }
             )
             "lista" -> ListaContribuyentesScreen(
                 viewModel = viewModel,
-                onEditarFisica = { rfc ->
-                    rfcAEditar = rfc
-                    pantallaActual = "registro_fisica"
-                },
-                onEditarMoral = { rfc ->
-                    rfcAEditar = rfc
-                    pantallaActual = "registro_moral"
-                }
+                onEditarFisica = { rfc -> rfcAEditar = rfc; pantallaActual = "registro_fisica" },
+                onEditarMoral = { rfc -> rfcAEditar = rfc; pantallaActual = "registro_moral" },
+                onAgregarDomicilioFisica = { rfc -> rfcParaDomicilio = rfc; pantallaActual = "registro_domicilio" },
+                onAgregarDomicilioMoral = { rfc -> rfcParaDomicilio = rfc; pantallaActual = "registro_domicilio" }
+            )
+            "registro_domicilio" -> RegistroDomicilioFiscalScreen(
+                viewModel = viewModel,
+                rfcVinculado = rfcParaDomicilio,
+                onNavigateMenu = { pantallaActual = "menu" }
             )
         }
     }

@@ -38,7 +38,33 @@ CREATE TABLE PersonaMoral (
     actividad_economica TEXT NOT NULL,
     FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio)
 );
+CREATE TABLE DomicilioFiscal (
+    rfc_padre TEXT NOT NULL PRIMARY KEY,
+    codigo_postal TEXT NOT NULL,
+    localidad TEXT NOT NULL,
+    colonia TEXT NOT NULL,
+    tipo_vialidad TEXT NOT NULL,
+    nombre_vialidad TEXT NOT NULL,
+    numero_exterior TEXT NOT NULL,
+    numero_interior TEXT,
+    entre_calle_1 TEXT NOT NULL,
+    entre_calle_2 TEXT NOT NULL,
+    referencia_adicional TEXT NOT NULL,
+    caracteristicas_domicilio TEXT NOT NULL,
+    FOREIGN KEY (rfc_padre) REFERENCES PersonaMoral(rfc) ON DELETE CASCADE,
+    FOREIGN KEY (rfc_padre) REFERENCES PersonaFisica(rfc) ON DELETE CASCADE
+);
 
+insertOrReplaceDomicilioFiscal:
+INSERT OR REPLACE INTO DomicilioFiscal(
+    rfc_padre, codigo_postal, localidad, colonia,
+    tipo_vialidad, nombre_vialidad, numero_exterior, numero_interior,
+    entre_calle_1, entre_calle_2, referencia_adicional, caracteristicas_domicilio
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectDomicilioByRfc:
+SELECT * FROM DomicilioFiscal WHERE rfc_padre = ?;
 -- CONSULTAS (Queries)
 selectAllEstados:
 SELECT * FROM Estado;
