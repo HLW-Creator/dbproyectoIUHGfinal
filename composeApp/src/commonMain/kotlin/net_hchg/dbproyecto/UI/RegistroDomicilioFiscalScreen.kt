@@ -17,8 +17,6 @@ fun RegistroDomicilioFiscalScreen(
     onNavigateMenu: () -> Unit
 ) {
     var codigoPostal by remember { mutableStateOf("") }
-    var estado by remember { mutableStateOf("") }
-    var municipio by remember { mutableStateOf("") }
     var localidad by remember { mutableStateOf("") }
     var colonia by remember { mutableStateOf("") }
     var tipoVialidad by remember { mutableStateOf("") }
@@ -52,8 +50,6 @@ fun RegistroDomicilioFiscalScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(value = codigoPostal, onValueChange = { codigoPostal = it }, label = { Text("Código Postal") }, modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(value = estado, onValueChange = { estado = it }, label = { Text("Estado") }, modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(value = municipio, onValueChange = { municipio = it }, label = { Text("Municipio") }, modifier = Modifier.fillMaxWidth())
         OutlinedTextField(value = localidad, onValueChange = { localidad = it }, label = { Text("Localidad") }, modifier = Modifier.fillMaxWidth())
         OutlinedTextField(value = colonia, onValueChange = { colonia = it }, label = { Text("Colonia") }, modifier = Modifier.fillMaxWidth())
         OutlinedTextField(value = tipoVialidad, onValueChange = { tipoVialidad = it }, label = { Text("Tipo Vialidad") }, modifier = Modifier.fillMaxWidth())
